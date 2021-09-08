@@ -1,4 +1,5 @@
-# 0.0.2
+# [0.0.3 - Unreleased](https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view/tree/0.0.3)
+# [0.0.2](https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view/tree/0.0.2)
 
 - Update `README.md` file.
 - Add license information in package files.
@@ -9,6 +10,6 @@
 - Add `onCellTap` callback in `MonthView`.
 - Make `controller` optional parameter in all views where `CalendarControllerProvider` is provided.
 
-# 0.0.1
+# [0.0.1](https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view/tree/0.0.1)
 
 - Initial release
