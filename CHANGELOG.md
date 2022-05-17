@@ -1,6 +1,7 @@
 # [0.0.5]() - 15 March 2022 [Unreleased]
 
 - Fixed issue [#48 - WeekView header date is different from the calendar view](https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view/issues/48)
+- Fixed issue [#46 - Change beginning of week in MonthView](https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view/issues/46)
 
 # [0.0.4](https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view/tree/0.0.4)
 

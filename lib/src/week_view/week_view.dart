@@ -128,6 +128,11 @@ class WeekView<T> extends StatefulWidget {
   /// This method will be called when user long press on calendar.
   final DatePressCallback? onDateLongPress;
 
+  /// Defines the day from which the week starts.
+  ///
+  /// Default value is [WeekDays.monday].
+  final WeekDays startDay;
+
   /// Main widget for week view.
   const WeekView({
     Key? key,
@@ -157,6 +162,7 @@ class WeekView<T> extends StatefulWidget {
     this.onDateLongPress,
     this.weekDays = WeekDays.values,
     this.showWeekends = true,
+    this.startDay = WeekDays.monday,
   }) : super(key: key);
 
   @override
@@ -208,7 +214,9 @@ class WeekViewState<T> extends State<WeekView<T>> {
     _weekDays = widget.weekDays.toSet().toList();
 
     if (!widget.showWeekends) {
-      _weekDays..remove(WeekDays.saturday)..remove(WeekDays.sunday);
+      _weekDays
+        ..remove(WeekDays.saturday)
+        ..remove(WeekDays.sunday);
     }
 
     assert(
@@ -222,9 +230,11 @@ class WeekViewState<T> extends State<WeekView<T>> {
 
     _totalDaysInWeek = _weekDays.length;
 
-    _minDate = (widget.minDay ?? CalendarConstants.epochDate).firstDayOfWeek;
+    _minDate = (widget.minDay ?? CalendarConstants.epochDate)
+        .firstDayOfWeek(start: widget.startDay);
 
-    _maxDate = (widget.maxDay ?? CalendarConstants.maxDate).lastDayOfWeek;
+    _maxDate = (widget.maxDay ?? CalendarConstants.maxDate)
+        .lastDayOfWeek(start: widget.startDay);
 
     assert(
       _minDate.isBefore(_maxDate),
@@ -240,11 +250,10 @@ class WeekViewState<T> extends State<WeekView<T>> {
       _initialDay = _maxDate;
     }
 
-    _currentStartDate = _initialDay.firstDayOfWeek;
-    _currentEndDate = _initialDay.lastDayOfWeek;
-
+    _currentStartDate = _initialDay.firstDayOfWeek(start: widget.startDay);
+    _currentEndDate = _initialDay.lastDayOfWeek(start: widget.startDay);
     _totalWeeks = _minDate.getWeekDifference(_maxDate) + 1;
-    _currentIndex = _minDate.getWeekDifference(_currentEndDate);
+    _currentIndex = _minDate.getWeekDifference(_currentStartDate);
     _hourHeight = widget.heightPerMinute * 60;
     _height = _hourHeight * Constants.hoursADay;
     _timeLineOffset = widget.timeLineOffset;
@@ -337,7 +346,7 @@ class WeekViewState<T> extends State<WeekView<T>> {
                     itemBuilder: (_, index) {
                       final dates = _minDate
                           .add(Duration(days: index * DateTime.daysPerWeek))
-                          .datesOfWeek();
+                          .datesOfWeek(start: widget.startDay);
 
                       return InternalWeekViewPage<T>(
                         key: ValueKey(
