@@ -319,6 +319,7 @@ class DayViewState<T> extends State<DayView<T>> {
                         return InternalDayViewPage<T>(
                           key: ValueKey(
                               _hourHeight.toString() + date.toString()),
+                          startHour: widget.startHour,
                           width: _width,
                           liveTimeIndicatorSettings: _liveTimeIndicatorSettings,
                           timeLineBuilder: _timeLineBuilder,
