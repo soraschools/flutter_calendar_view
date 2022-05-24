@@ -28,6 +28,7 @@ abstract class EventArranger<T> {
     required double height,
     required double width,
     required double heightPerMinute,
+    int startHour = 1,
   });
 }
 

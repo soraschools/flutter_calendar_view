@@ -129,6 +129,8 @@ class DayView<T> extends StatefulWidget {
   /// This method will be called when user long press on calendar.
   final DatePressCallback? onDateLongPress;
 
+  final int startHour;
+
   /// Main widget for day view.
   const DayView({
     Key? key,
@@ -156,6 +158,7 @@ class DayView<T> extends StatefulWidget {
     this.scrollOffset = 0.0,
     this.onEventTap,
     this.onDateLongPress,
+    this.startHour = 1,
   })  : assert((timeLineOffset) >= 0,
             "timeLineOffset must be greater than or equal to 0"),
         super(key: key);
@@ -202,6 +205,8 @@ class DayViewState<T> extends State<DayView<T>> {
   void initState() {
     super.initState();
 
+    final hourOffset = widget.startHour - 1;
+
     _reloadCallback = _reload;
 
     _minDate = widget.minDay ?? CalendarConstants.epochDate;
@@ -224,7 +229,7 @@ class DayViewState<T> extends State<DayView<T>> {
     _totalDays = _maxDate.getDayDifference(_minDate) + 1;
     _currentIndex = _currentDate.getDayDifference(_minDate);
     _hourHeight = widget.heightPerMinute * 60;
-    _height = _hourHeight * Constants.hoursADay;
+    _height = _hourHeight * (Constants.hoursADay - hourOffset);
     _timeLineOffset = widget.timeLineOffset;
     _scrollController =
         ScrollController(initialScrollOffset: widget.scrollOffset);

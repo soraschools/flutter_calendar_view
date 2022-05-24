@@ -68,6 +68,8 @@ class InternalDayViewPage<T> extends StatelessWidget {
   /// Called when user long press on calendar.
   final DatePressCallback? onDateLongPress;
 
+  final int startHour;
+
   /// Defines a single day page.
   const InternalDayViewPage({
     Key? key,
@@ -89,6 +91,7 @@ class InternalDayViewPage<T> extends StatelessWidget {
     required this.verticalLineOffset,
     required this.onTileTap,
     required this.onDateLongPress,
+     this.startHour = 1,
   }) : super(key: key);
 
   @override
@@ -107,6 +110,7 @@ class InternalDayViewPage<T> extends StatelessWidget {
               minuteHeight: heightPerMinute,
               verticalLineOffset: verticalLineOffset,
               showVerticalLine: showVerticalLine,
+              startHour: startHour,
             ),
           ),
           if (showLiveLine && liveTimeIndicatorSettings.height > 0)
@@ -127,6 +131,7 @@ class InternalDayViewPage<T> extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: EventGenerator<T>(
+              startHour: startHour,
               height: height,
               date: date,
               onTileTap: onTileTap,
@@ -141,6 +146,7 @@ class InternalDayViewPage<T> extends StatelessWidget {
             ),
           ),
           TimeLine(
+            startHour: startHour,
             height: height,
             hourHeight: hourHeight,
             timeLineBuilder: timeLineBuilder,

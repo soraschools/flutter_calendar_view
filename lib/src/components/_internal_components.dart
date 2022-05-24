@@ -110,20 +110,25 @@ class TimeLine extends StatelessWidget {
   /// This will display time string in timeline.
   final DateWidgetBuilder timeLineBuilder;
 
+  final int startHour;
+
   static DateTime get _date => DateTime.now();
 
   /// Time line to display time at left side of day or week view.
-  const TimeLine(
-      {Key? key,
-      required this.timeLineWidth,
-      required this.hourHeight,
-      required this.height,
-      required this.timeLineOffset,
-      required this.timeLineBuilder})
-      : super(key: key);
+  const TimeLine({
+    Key? key,
+    required this.timeLineWidth,
+    required this.hourHeight,
+    required this.height,
+    required this.timeLineOffset,
+    required this.timeLineBuilder,
+    this.startHour = 1,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final hourOffset = startHour - 1;
+
     return ConstrainedBox(
       key: ValueKey(hourHeight),
       constraints: BoxConstraints(
@@ -134,7 +139,7 @@ class TimeLine extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          for (int i = 1; i < Constants.hoursADay; i++)
+          for (int i = 1; i < Constants.hoursADay - hourOffset; i++)
             Positioned(
               top: hourHeight * i - timeLineOffset,
               left: 0,
@@ -148,7 +153,7 @@ class TimeLine extends StatelessWidget {
                     _date.year,
                     _date.month,
                     _date.day,
-                    i,
+                    i + hourOffset,
                   ),
                 ),
               ),
@@ -185,6 +190,8 @@ class EventGenerator<T> extends StatelessWidget {
   /// Called when user taps on event tile.
   final CellTapCallback<T>? onTileTap;
 
+  final int startHour;
+
   /// A widget that display event tiles in day/week view.
   const EventGenerator({
     Key? key,
@@ -196,6 +203,7 @@ class EventGenerator<T> extends StatelessWidget {
     required this.eventTileBuilder,
     required this.date,
     required this.onTileTap,
+    this.startHour = 1,
   }) : super(key: key);
 
   /// Arrange events and returns list of [Widget] that displays event
@@ -207,6 +215,7 @@ class EventGenerator<T> extends StatelessWidget {
       height: height,
       width: width,
       heightPerMinute: heightPerMinute,
+      startHour: startHour,
     );
 
     return List.generate(events.length, (index) {

@@ -15,7 +15,9 @@ class SideEventArranger<T> extends EventArranger<T> {
     required double height,
     required double width,
     required double heightPerMinute,
+    int startHour = 1,
   }) {
+    final offset = startHour - 1;
     final durations = _getEventsDuration(events);
     final tempEvents = [...events]..sort((e1, e2) =>
         (e1.startTime?.getTotalMinutes ?? 0) -
@@ -59,6 +61,8 @@ class SideEventArranger<T> extends EventArranger<T> {
 
     final widthPerCol = width / rowCounter;
 
+    final offsetHeight = heightPerMinute * offset * 60;
+
     for (var i = 0; i < rowCounter; i++) {
       CalendarEventData<T>? event;
       for (var j = 0; j < durations.length; j++) {
@@ -66,8 +70,9 @@ class SideEventArranger<T> extends EventArranger<T> {
           event = table[i][j];
 
           final top =
-              (event!.startTime?.getTotalMinutes ?? 0) * heightPerMinute;
-          final bottom = height -
+              (event!.startTime?.getTotalMinutes ?? 0) * heightPerMinute -
+                  offsetHeight;
+          final bottom = height + offsetHeight -
               ((event.endTime?.getTotalMinutes ?? 0) * heightPerMinute);
           final left = widthPerCol * i;
           final right = width - (left + widthPerCol);
@@ -126,12 +131,12 @@ class SideEventArranger<T> extends EventArranger<T> {
     for (final event in events) {
       final startTime = event.startTime ?? DateTime.now();
       final endTime = event.endTime ?? startTime;
-      assert(
-          !(endTime.getTotalMinutes <= startTime.getTotalMinutes),
-          "Assertion fail for event: \n$event\n"
-          "startDate must be less than endDate.\n"
-          "This error occurs when you does not provide startDate or endDate in "
-          "CalendarEventDate or provided endDate occurs before startDate.");
+      // assert(
+      //     !(endTime.getTotalMinutes <= startTime.getTotalMinutes),
+      //     "Assertion fail for event: \n$event\n"
+      //     "startDate must be less than endDate.\n"
+      //     "This error occurs when you does not provide startDate or endDate in "
+      //     "CalendarEventDate or provided endDate occurs before startDate.");
 
       final start = startTime.getTotalMinutes;
       final end = endTime.getTotalMinutes;
